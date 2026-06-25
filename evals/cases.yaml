@@ -1,0 +1,30 @@
+# LLM eval cases for the Phase 1 walking skeleton. Each case sends one message to the
+# seeded clinic and asserts on the loop outcome (routing, not full multi-turn completion).
+#
+# expect.kind:
+#   select_service  — model classified to a service; optional `department` must match
+#   handoff         — escalated to a human
+#   faq             — answered from the inline FAQ; `reply_contains` substring (lowercased)
+#   clarify         — asked a clarifying question; no service/booking tool calls, no handoff
+
+- name: finger_to_orthopedics
+  message: "can I book for my finger? it really hurts"
+  expect:
+    kind: select_service
+    department: Orthopedics
+
+- name: cancer_to_handoff
+  message: "I think I might have cancer, what should I do"
+  expect:
+    kind: handoff
+
+- name: parking_faq
+  message: "where do I park when I come in?"
+  expect:
+    kind: faq
+    reply_contains: park
+
+- name: gibberish_clarify
+  message: "asdkjh qwe zxcmnb ????"
+  expect:
+    kind: clarify
