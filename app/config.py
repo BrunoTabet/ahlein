@@ -27,6 +27,9 @@ class Settings(BaseSettings):
     encryption_key: str = ""
     whatsapp_verify_token: str = "dev-verify-token"
 
+    # Single shared key protecting the admin API + web UI (Phase 2; RBAC is later).
+    admin_api_key: str = "change-me-admin"
+
     log_level: str = "INFO"
 
     @property

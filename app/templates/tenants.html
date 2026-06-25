@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Clinics</h2>
+  <table>
+    <tr><th>Name</th><th>WhatsApp phone_number_id</th><th>Provider</th><th>Services</th><th></th></tr>
+    {% for t in tenants %}
+    <tr>
+      <td>{{ t.name }}</td>
+      <td class="muted">{{ t.phone_number_id }}</td>
+      <td>{{ t.booking_provider }}</td>
+      <td>{{ t.services | length }}</td>
+      <td><a href="/admin/tenants/{{ t.id }}">manage →</a></td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5" class="muted">No clinics yet — add one below.</td></tr>
+    {% endfor %}
+  </table>
+</div>
+
+<div class="card">
+  <h2>Add a clinic</h2>
+  <form method="post" action="/admin/tenants">
+    <div class="row">
+      <div><label>Name</label><input name="name" required></div>
+      <div><label>WhatsApp phone_number_id</label><input name="phone_number_id" required></div>
+    </div>
+    <div class="row">
+      <div><label>Timezone</label><input name="timezone" value="Asia/Dubai"></div>
+      <div>
+        <label>Booking provider</label>
+        <select name="booking_provider">
+          <option value="mock">mock (testing)</option>
+          <option value="calcom">calcom</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div><label>Cal.com API key <span class="muted">(optional, encrypted)</span></label>
+           <input name="booking_api_key" type="password"></div>
+      <div><label>WhatsApp token <span class="muted">(optional, encrypted)</span></label>
+           <input name="whatsapp_token" type="password"></div>
+    </div>
+    <button type="submit">Create clinic</button>
+  </form>
+</div>
+{% endblock %}
